@@ -148,20 +148,19 @@ return Article::create('../README', 'Docbot', [
                             namespace: 'Acme\\PetstoreClient\\DTO',
                             components: ['NewPet'],
                             modelVisitors: [
-                                static function (Model\ClassModel $model): void {
-                                    if ($model->name->shortName() !== 'NewPet') {
-                                        return;
+                                static function (Model\ClassModels $models): void {
+                                    foreach ($models->byShortNames('NewPet') as $model) {
+                                        $model->property('owner')->phpType = new Model\Type\ShapeType([
+                                            'firstName' => new Model\Type\StringType(),
+                                            'lastName' => new Model\Type\StringType(),
+                                            'nickname' => new Model\Type\UnionType([
+                                                new Model\Type\NullType(),
+                                                new Model\Type\StringType(),
+                                            ]),
+                                        ]);
+                                        unset($model->properties['name']);
+                                        unset($model->properties['tag']);
                                     }
-                                    $model->property('owner')->phpType = new Model\Type\ShapeType([
-                                        'firstName' => new Model\Type\StringType(),
-                                        'lastName' => new Model\Type\StringType(),
-                                        'nickname' => new Model\Type\UnionType([
-                                            new Model\Type\NullType(),
-                                            new Model\Type\StringType(),
-                                        ]),
-                                    ]);
-                                    unset($model->properties['name']);
-                                    unset($model->properties['tag']);
                                 },
                             ],
                         ),

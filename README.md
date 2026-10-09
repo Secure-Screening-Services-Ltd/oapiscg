@@ -1,8 +1,8 @@
-OAPSCG
+Docbot
 ======
 
 > [!WARNING]
-> This library is **experimental** and contains bugs. Some bugs are even evident in this [scripted](https://github.com/dantleech/docbot) README file.
+> This library is experimental and contains bugs. Some bugs are evident in this [scripted](https://github.com/dantleech/docbot) README file.
 > See if you can spot them 🪄
 
 This is the **PHP Open API Source Code Generator**. It generates DTOs for OpenAPI
@@ -111,14 +111,13 @@ Generate the DTOs:
 $ oapiscg petstore
 Writing to directory: src/PetstoreClient/DTO
 
- 141 bytes > Pet.Owner
- 213 bytes > Pet
- 137 bytes > Owner
- 212 bytes > NewPet
  144 bytes > NewPet.Owner
+ 219 bytes > NewPet
+ 137 bytes > Owner
+ 232 bytes > Pet
  150 bytes > Error
 
- Generated 6 classes in 0.0059 seconds 
+ Generated 5 classes in 0.0024 seconds 
 
 
 ```
@@ -131,7 +130,7 @@ namespace Acme\PetstoreClient\DTO;
 
 final class NewPet
 {
-    public function __construct(public string $name, public ?string $tag = null, public ?\Acme\PetstoreClient\DTO\Owner $owner = null)
+    public function __construct(public string $name, public ?string $tag = null, public ?\Acme\PetstoreClient\DTO\NewPet\Owner $owner = null)
     {
     }
 }
@@ -164,7 +163,7 @@ Writing to directory: src/PetstoreClient/DTO
  144 bytes > NewPet.Owner
  219 bytes > NewPet
 
- Generated 2 classes in 0.0067 seconds 
+ Generated 2 classes in 0.0025 seconds 
 
 
 ```
@@ -196,7 +195,7 @@ Writing to directory: src/PetstoreClient/DTO
 
  245 bytes > NewPet
 
- Generated 1 classes in 0.0096 seconds 
+ Generated 1 classes in 0.0021 seconds 
 
 
 ```
@@ -236,20 +235,19 @@ return Configs::from([
         namespace: 'Acme\\PetstoreClient\\DTO',
         components: ['NewPet'],
         modelVisitors: [
-            static function (Model\ClassModel $model): void {
-                if ($model->name->shortName() !== 'NewPet') {
-                    return;
+            static function (Model\ClassModels $models): void {
+                foreach ($models->byShortNames('NewPet') as $model) {
+                    $model->property('owner')->phpType = new Model\Type\ShapeType([
+                        'firstName' => new Model\Type\StringType(),
+                        'lastName' => new Model\Type\StringType(),
+                        'nickname' => new Model\Type\UnionType([
+                            new Model\Type\NullType(),
+                            new Model\Type\StringType(),
+                        ]),
+                    ]);
+                    unset($model->properties['name']);
+                    unset($model->properties['tag']);
                 }
-                $model->property('owner')->phpType = new Model\Type\ShapeType([
-                    'firstName' => new Model\Type\StringType(),
-                    'lastName' => new Model\Type\StringType(),
-                    'nickname' => new Model\Type\UnionType([
-                        new Model\Type\NullType(),
-                        new Model\Type\StringType(),
-                    ]),
-                ]);
-                unset($model->properties['name']);
-                unset($model->properties['tag']);
             },
         ],
     ),
@@ -263,7 +261,7 @@ Writing to directory: src/PetstoreClient/DTO
  144 bytes > NewPet.Owner
  231 bytes > NewPet
 
- Generated 2 classes in 0.0103 seconds 
+ Generated 2 classes in 0.0022 seconds 
 
 
 ```
@@ -323,7 +321,7 @@ Writing to directory: src/PetstoreClient/DTO
  202 bytes > NewPet.Owner
  277 bytes > NewPet
 
- Generated 2 classes in 0.0073 seconds 
+ Generated 2 classes in 0.0028 seconds 
 
 
 ```
