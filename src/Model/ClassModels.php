@@ -49,11 +49,12 @@ final class ClassModels implements IteratorAggregate
         $properties = [];
         foreach ($this->classes as $class) {
             foreach ($class->properties as $property) {
-                if (!isset($properties[$property->name])) {
+                if (!array_key_exists($property->name, $properties)) {
                     $properties[$property->name] = $property;
                     continue;
                 }
 
+                // @mago-expect linter:identity-comparison
                 if ($properties[$property->name] == $property) {
                     continue;
                 }
