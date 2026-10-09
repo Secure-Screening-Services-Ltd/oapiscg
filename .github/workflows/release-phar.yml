@@ -26,7 +26,7 @@ jobs:
         with:
             composer-options: "--no-scripts --no-dev"
 
-      - name: Compile phpactor.phar
+      - name: Compile oapiscg.phar
         run: scripts/build-phar.sh
 
       - name: Check existence of compiled .phar
@@ -38,6 +38,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./build/phpactor.phar
-          asset_name: phpactor.phar
+          asset_path: ./build/oapiscg.phar
+          asset_name: oapiscg.phar
           asset_content_type: application/octet-stream
