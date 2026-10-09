@@ -1,0 +1,43 @@
+on:
+  release:
+    types:
+      - created
+
+name: Append oapiscg.phar to release
+
+jobs:
+  build:
+    name: Compile and upload Phar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+            fetch-depth: 0
+
+      - name: Set PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      -
+        name: "Composer install"
+        uses: "ramsey/composer-install@v2"
+        with:
+            composer-options: "--no-scripts --no-dev"
+
+      - name: Compile phpactor.phar
+        run: scripts/build-phar.sh
+
+      - name: Check existence of compiled .phar
+        run: test -e build/oapiscg.phar && exit 0 || exit 10
+
+      - name: "Upload PHAR to Release"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./build/phpactor.phar
+          asset_name: phpactor.phar
+          asset_content_type: application/octet-stream
