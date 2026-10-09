@@ -3,6 +3,7 @@
     "description": "Open API Selective Code Generator",
     "type": "library",
     "require": {
+        "php": "^8.4",
         "nikic/php-parser": "^5.8",
         "cebe/php-openapi": "^1.8",
         "symfony/console": "^7.4"
