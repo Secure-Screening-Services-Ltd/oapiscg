@@ -5,6 +5,9 @@ on:
 
 name: Append oapiscg.phar to release
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Compile and upload Phar
