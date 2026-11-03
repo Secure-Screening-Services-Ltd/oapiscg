@@ -1,0 +1,16 @@
+name: oapiscg
+id: ari:cloud:compass:17eeeeb4-5edd-4c26-bf40-521e45a0ca67:component/d287be13-b902-4f80-b57b-87fc88163e40/b2453bd7-4492-4599-bc2a-1d8869351d1b
+description: null
+configVersion: 1
+typeId: SERVICE
+fields:
+  tier: 4
+links:
+  - name: null
+    type: REPOSITORY
+    url: https://github.com/Secure-Screening-Services-Ltd/oapiscg
+relationships:
+  DEPENDS_ON: []
+labels:
+  - source:github
+customFields: null
